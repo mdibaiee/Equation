@@ -51,7 +51,7 @@ Options:
 #####fn
   The function which runs on arguments
 #####format
-  The format which specifies how arguments are placed relative to operator, this is a string in which 1 indicates operator and zeroes indicate arguments.
+  The format which specifies how arguments are placed relative to operator, this is a string in which 1 represents the operator and zeroes represent arguments.
 
   For example `+` has the format `010` and factorial has `01`.
 #####precedence
