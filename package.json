@@ -13,9 +13,6 @@
     "Math",
     "JavaScript"
   ],
-  "bin": {
-    "equation": "bin.js"
-  },
   "author": "Mahdi Dibaiee",
   "license": "MIT",
   "devDependencies": {
