@@ -1,6 +1,7 @@
 Equation
 ========
 Solve math expressions or create equations for repeated and complex Math tasks.
+To use in browser, download [`equation.min.js`](https://raw.githubusercontent.com/mdibaiee/Equation.js/master/equation.min.js).
 
 ```javascript
 // solve
