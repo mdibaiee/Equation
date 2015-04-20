@@ -1,0 +1,37 @@
+'use strict';
+
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+var _expect = require('chai');
+
+var _M = require('../index.js');
+
+var _M2 = _interopRequireWildcard(_M);
+
+describe('Equations', function () {
+  it('should work with one variable', function () {
+    var equation = _M2['default'].equation('x+2');
+
+    _expect.expect(equation(2)).to.equal(4);
+  });
+
+  it('should work with multiple variables', function () {
+    var equation = _M2['default'].equation('x+y');
+    _expect.expect(equation(2, 4)).to.equal(6);
+  });
+
+  it('should work with multiple instances of the same variable', function () {
+    var equation = _M2['default'].equation('x*x');
+    _expect.expect(equation(4)).to.equal(16);
+  });
+
+  it('should only accept lowercase letters', function () {
+    var equation = _M2['default'].equation('X+2');
+    _expect.expect(equation).to['throw']();
+  });
+
+  it('Test case', function () {
+    var equation = _M2['default'].equation('2+x*(y+4)+z^2');
+    _expect.expect(equation(2, 4, 3)).to.equal(27);
+  });
+});
