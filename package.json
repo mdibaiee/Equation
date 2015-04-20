@@ -1,5 +1,5 @@
 {
-  "name": "mathstring",
+  "name": "equation",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -13,6 +13,9 @@
     "Math",
     "JavaScript"
   ],
+  "bin": {
+    "equation": "bin.js"
+  },
   "author": "Mahdi Dibaiee",
   "license": "MIT",
   "devDependencies": {
