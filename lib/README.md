@@ -5,7 +5,7 @@ To use in browser, download [`equation.min.js`](https://raw.githubusercontent.co
 
 ```javascript
 // solve
-console.log(Equation.solve('4 * lg4 ^ 3')); // 32
+console.log(Equation.solve('4 * lg(4) ^ 3')); // 32
 
 // equation
 let sphereArea = Equation.equation('4 * PI * r^2');
