@@ -53,6 +53,10 @@ describe('Functions', () => {
   it('should work for without parantheses', () => {
     expect(M.solve('lg4 * 5')).to.equal(10);
   });
+
+  it('should work for wrapped functions', () => {
+    expect(M.solve('(lg4)*2')).to.equal(4);
+  });
 });
 
 describe('Constats', () => {

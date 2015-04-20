@@ -13,7 +13,8 @@ exports['default'] = function (string) {
 
       if (i >= string.length) {
         return null;
-      }return string[i++];
+      }
+      return string[i++];
     },
     current: function current() {
       return string[i - 1];

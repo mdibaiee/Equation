@@ -7,7 +7,12 @@ module.exports = function(grunt) {
       dist: {
         files: [{
           expand: true,
-          src: ['lib/*.js', 'tests/*.js'],
+          src: ['tests/*.js'],
+          dest: 'dist/'
+        }, {
+          expand: true,
+          src: ['lib/*.js'],
+          flatten: true,
           dest: 'dist/'
         }]
       }

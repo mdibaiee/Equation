@@ -26,7 +26,11 @@ var _import = require('./helpers');
 
 var _ = _interopRequireWildcard(_import);
 
-var Mathstring = {
+var _polyfills = require('babel/polyfill');
+
+var _polyfills2 = _interopRequireWildcard(_polyfills);
+
+var Equation = {
   /**
     * Solves the given math expression, following these steps:
     * 1. Replace constants in the expression
@@ -72,7 +76,7 @@ var Mathstring = {
     var variables = [];
 
     stack.forEach(function (a) {
-      if (!_.isNumber(a) && !_operators2['default'][a] && a === a.toLowerCase()) {
+      if (typeof a === 'string' && !_.isNumber(a) && !_operators2['default'][a] && a === a.toLowerCase()) {
         // grouped variables like (y) need to have their parantheses removed
         variables.push(_.removeSymbols(a));
       }
@@ -91,8 +95,7 @@ var Mathstring = {
         return a;
       });
 
-      console.log(variables, expression);
-      return Mathstring.solve(expression);
+      return Equation.solve(expression);
     };
   }
 };
@@ -168,7 +171,6 @@ var parseExpression = function parseExpression(expression) {
     stack.push(record);
   }
 
-  // $0(stack);
   return parseGroups(stack);
 };
 
@@ -187,9 +189,9 @@ var parseGroups = function parseGroups(stack) {
   // Parantheses become inner arrays which will then be processed first
   var sub = 0;
   return stack.reduce(function (a, b) {
-    if (b[b.length - 1] === '(') {
+    if (b.includes('(')) {
       if (b.length > 1) {
-        _.dive(a, sub).push(b.slice(0, -1), []);
+        _.dive(a, sub).push(b.replace('(', ''), []);
       } else {
         _.dive(a, sub).push([]);
       }
@@ -392,5 +394,5 @@ var replaceConstants = function replaceConstants(expression) {
   });
 };
 
-exports['default'] = Mathstring;
+exports['default'] = Equation;
 module.exports = exports['default'];

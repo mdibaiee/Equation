@@ -60,6 +60,10 @@ describe('Functions', function () {
   it('should work for without parantheses', function () {
     _expect.expect(_M2['default'].solve('lg4 * 5')).to.equal(10);
   });
+
+  it('should work for wrapped functions', function () {
+    _expect.expect(_M2['default'].solve('(lg4)*2')).to.equal(4);
+  });
 });
 
 describe('Constats', function () {

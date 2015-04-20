@@ -22,5 +22,8 @@
     "grunt-eslint": "^11.0.0",
     "grunt-mocha-test": "^0.12.7",
     "mocha": "^2.2.4"
+  },
+  "dependencies": {
+    "babel": "^5.1.11"
   }
 }
