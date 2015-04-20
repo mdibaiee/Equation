@@ -20,6 +20,25 @@ module.exports = function(grunt) {
     mochaTest: {
       files: ['dist/tests/*.js']
     },
+    browserify: {
+      dist: {
+        files: {
+          'equation.js': 'dist/index.js'
+        },
+        options: {
+          browserifyOptions: {
+            standalone: 'Equation'
+          }
+        }
+      }
+    },
+    uglify: {
+      dist: {
+        files: {
+          'equation.min.js': 'equation.js'
+        }
+      }
+    },
     watch: {
       scripts: {
         files: 'lib/*.js',
@@ -32,7 +51,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-babel');
   grunt.loadNpmTasks('grunt-mocha-test');
+  grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
 
-  grunt.registerTask('default', [ 'babel']);
+  grunt.registerTask('default', ['babel']);
+  grunt.registerTask('build', ['babel', 'browserify', 'uglify']);
   grunt.registerTask('test', ['babel', 'mochaTest']);
 };

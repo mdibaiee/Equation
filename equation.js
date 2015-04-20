@@ -1,3 +1,180 @@
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Equation = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+/*
+ * Constats
+ * Keys must be UPPERCASE
+ * Values Can be a constant value or a function returning a value
+ *        this function doesn't take any arguments (use case: random constats)
+ */
+exports['default'] = {
+  PI: Math.PI,
+  E: Math.E,
+  RAND: Math.random
+};
+module.exports = exports['default'];
+},{}],2:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+var parseFormat = function parseFormat(a) {
+  var split = a.split('1');
+  return {
+    left: split[0].length,
+    right: split[1].length
+  };
+};
+
+exports.parseFormat = parseFormat;
+var isNumber = function isNumber(a) {
+  return !isNaN(+a);
+};
+
+exports.isNumber = isNumber;
+var parseNumbers = (function (_parseNumbers) {
+  function parseNumbers(_x) {
+    return _parseNumbers.apply(this, arguments);
+  }
+
+  parseNumbers.toString = function () {
+    return _parseNumbers.toString();
+  };
+
+  return parseNumbers;
+})(function (a) {
+  return a.map(function (b) {
+    if (isNumber(b)) {
+      return parseFloat(b);
+    }
+    if (Array.isArray(b)) {
+      return parseNumbers(b);
+    }
+    return b;
+  });
+});
+
+exports.parseNumbers = parseNumbers;
+var dive = function dive(arr, n) {
+  var result = arr;
+  for (var i = 0; i < n; ++i) {
+    result = result[result.length - 1];
+  }
+  return result;
+};
+
+exports.dive = dive;
+var deep = (function (_deep) {
+  function deep(_x2, _x3) {
+    return _deep.apply(this, arguments);
+  }
+
+  deep.toString = function () {
+    return _deep.toString();
+  };
+
+  return deep;
+})(function (arr, n) {
+  var index = arguments[2] === undefined ? 0 : arguments[2];
+
+  if (n < 2) {
+    return { arr: arr, index: index };
+  }
+
+  var d = arr.reduce(function (a, b, i) {
+    if (Array.isArray(b)) {
+      var _deep2 = deep(b, n - 1, i);
+
+      var _arr = _deep2.arr;
+      var x = _deep2.index;
+      var merged = a.concat(_arr);
+
+      index = x;
+      return merged;
+    }
+    return a;
+  }, []);
+
+  return { arr: d, index: index };
+});
+
+exports.deep = deep;
+var diveTo = (function (_diveTo) {
+  function diveTo(_x4, _x5, _x6) {
+    return _diveTo.apply(this, arguments);
+  }
+
+  diveTo.toString = function () {
+    return _diveTo.toString();
+  };
+
+  return diveTo;
+})(function (arr, indexes, replace) {
+  var answer = [];
+  if (indexes.some(Array.isArray)) {
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = indexes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var index = _step.value;
+
+        answer.push(diveTo(arr, index, replace));
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator['return']) {
+          _iterator['return']();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+  } else {
+    arr[indexes[0]] = replace;
+    return replace;
+  }
+
+  return answer;
+});
+
+exports.diveTo = diveTo;
+var flatten = (function (_flatten) {
+  function flatten(_x7) {
+    return _flatten.apply(this, arguments);
+  }
+
+  flatten.toString = function () {
+    return _flatten.toString();
+  };
+
+  return flatten;
+})(function (arr) {
+  if (!Array.isArray(arr) || !arr.some(Array.isArray)) {
+    return arr;
+  }
+
+  return arr.reduce(function (a, b) {
+    return a.concat(flatten(b));
+  }, []);
+});
+
+exports.flatten = flatten;
+var removeSymbols = function removeSymbols(string) {
+  return string.replace(/\W/g, '');
+};
+exports.removeSymbols = removeSymbols;
+},{}],3:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -392,3 +569,183 @@ var replaceConstants = function replaceConstants(expression) {
 
 exports['default'] = Equation;
 module.exports = exports['default'];
+},{"./constats":1,"./helpers":2,"./operators":4,"./readstream":5}],4:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+/*
+ * Operators and Functions
+ * fn: function used to evaluate value
+ * format: the format using which arguments are parsed:
+ *         0 indicates an argument and 1 indicates the operator
+ *         e.g: factorial is 01, add is 010, like 2!, 2+2
+ * precedence: determines which operators should be evaluated first
+ *             the lower the value, the higher the precedence
+ */
+exports['default'] = {
+  '^': {
+    fn: function fn(a, b) {
+      return Math.pow(a, b);
+    },
+    format: '010',
+    precedence: 0
+  },
+  '*': {
+    fn: function fn(a, b) {
+      return a * b;
+    },
+    format: '010',
+    precedence: 1
+  },
+  '/': {
+    fn: function fn(a, b) {
+      return a / b;
+    },
+    format: '010',
+    precedence: 1
+  },
+  '%': {
+    fn: function fn(a, b) {
+      return a % b;
+    },
+    format: '010',
+    precedence: 1
+  },
+  '\\': {
+    fn: function fn(a, b) {
+      return Math.floor(a / b);
+    },
+    format: '010',
+    precedence: 1
+  },
+  '+': {
+    fn: function fn(a, b) {
+      return a + b;
+    },
+    format: '010',
+    precedence: 2
+  },
+  '-': {
+    fn: function fn(a, b) {
+      return a - b;
+    },
+    format: '010',
+    precedence: 2
+  },
+  '!': {
+    fn: function fn(a) {
+      var sum = 1;
+      for (var i = 0; i < a; ++i) {
+        sum *= i;
+      }
+      return sum;
+    },
+    format: '01',
+    precedence: 2
+  },
+  log: {
+    fn: Math.log,
+    format: '10',
+    precedence: -1
+  },
+  ln: {
+    fn: Math.log,
+    format: '10',
+    precedence: -1
+  },
+  lg: {
+    fn: function fn(a) {
+      return Math.log(a) / Math.log(2);
+    },
+    format: '10',
+    precedence: -1
+  },
+  sin: {
+    fn: Math.sin,
+    format: '10',
+    precedence: -1
+  },
+  cos: {
+    fn: Math.cos,
+    format: '10',
+    precedence: -1
+  },
+  tan: {
+    fn: Math.tan,
+    format: '10',
+    precedence: -1
+  },
+  cot: {
+    fn: Math.cot,
+    format: '10',
+    precedence: -1
+  }
+};
+module.exports = exports['default'];
+},{}],5:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+exports['default'] = function (string) {
+  var i = 0,
+      buffer = [];
+  return {
+    next: function next() {
+      buffer.push(string[i]);
+
+      if (i >= string.length) {
+        return null;
+      }
+      return string[i++];
+    },
+    current: function current() {
+      return string[i - 1];
+    },
+    index: function index() {
+      return i - 1;
+    },
+    to: function to(n) {
+      var temp = '';
+      var dest = i + n;
+      for (i = i; i < dest; ++i) {
+        temp += [string[i]];
+      }
+      return temp;
+    },
+    drain: function drain() {
+      return buffer.splice(0, buffer.length);
+    },
+    replace: (function (_replace) {
+      function replace(_x, _x2, _x3) {
+        return _replace.apply(this, arguments);
+      }
+
+      replace.toString = function () {
+        return _replace.toString();
+      };
+
+      return replace;
+    })(function (start, end, replace) {
+      var temp = string.split('');
+      temp.splice(start, end, replace);
+      string = temp.join('');
+
+      i = i - (end - start);
+    }),
+    go: function go(n) {
+      i += n;
+    },
+    all: function all() {
+      return string;
+    }
+  };
+};
+
+module.exports = exports['default'];
+},{}]},{},[3])(3)
+});
