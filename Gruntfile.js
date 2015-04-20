@@ -1,13 +1,13 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     eslint: {
-      target: ['*.js', 'tests/*.js']
+      target: ['lib/*.js', 'tests/*.js']
     },
     babel: {
       dist: {
         files: [{
           expand: true,
-          src: ['*.js', 'tests/*.js'],
+          src: ['lib/*.js', 'tests/*.js'],
           dest: 'dist/'
         }]
       }
@@ -17,8 +17,8 @@ module.exports = function(grunt) {
     },
     watch: {
       scripts: {
-        files: '**/*.js',
-        tasks: ['eslint', 'babel']
+        files: 'lib/*.js',
+        tasks: ['babel']
       }
     }
   });
