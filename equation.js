@@ -270,6 +270,13 @@ var Equation = {
 
       return Equation.solve(expression);
     };
+  },
+
+  registerOperator: function registerOperator(key, options) {
+    _operators2['default'][key] = options;
+  },
+  registerConstant: function registerConstant(key, options) {
+    _constants2['default'][key] = options;
   }
 };
 
