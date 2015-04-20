@@ -61,6 +61,28 @@ Options:
 Registers a new constant. value can be a function (takes no arguments), or a constant number.
 
 That's right, we have named these *constants* but they actually can change, that's why we can use functions to define them. An example is the `RAND` constant which calls `Math.random`.
+
+Contributing
+============
+The code is commented and I hope you don't have a hard time contributing,
+anyway, some tips about contributing:
+
+The source code is in `lib` directory and is then transpiled into `dist`.
+
+#####Grunt Tasks
+######default
+Transpiles `lib` to `dist`
+######build
+Transpiles, browserifies, uglifies
+######eslint
+Runs ESLint on `lib` and `tests`
+######test
+Runs the tests
+
+Please make sure to run `grunt eslint` before commiting.
+
+If you're adding something new, please add a test, too.
+
 TODO
 ====
 * Equation solver
