@@ -93,8 +93,3 @@ Runs the tests
 Please make sure to run `grunt eslint` before commiting.
 
 If you're adding something new, please add a test, too.
-
-TODO
-====
-* Equation solver
-* More tests
