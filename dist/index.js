@@ -53,6 +53,7 @@ var Equation = {
 
     return stack;
   },
+
   /**
     * Creates an equation function which replaces variables
     * in the given expression with the values specified in order,
@@ -72,8 +73,7 @@ var Equation = {
     var variables = [];
 
     stack.forEach(function (a) {
-      if (typeof a === 'string' && !_.isNumber(a) && !_operators2['default'][a] && a === a.toLowerCase()) {
-        // grouped variables like (y) need to have their parantheses removed
+      if (isVariable(a)) {
         variables.push(_.removeSymbols(a));
       }
     });
@@ -93,6 +93,31 @@ var Equation = {
 
       return Equation.solve(expression);
     };
+  },
+
+  /**
+    * Simplifies a math expression
+    *
+    * Example:
+    *   2*x^2 + x - 2*x - x^2
+    *   becomes
+    *   x^2 - x
+    *
+    * @param {String} expression
+    *        The expression to create an equation for (containing variables)
+    * @return {String}
+    *         The simplified expression
+    */
+  simplify: function simplify(expression) {
+    var stack = parseExpression(expression);
+    stack = sortStack(stack);
+    stack = _.parseNumbers(stack);
+
+    console.dir(stack, {
+      depth: null
+    });
+
+    return expression;
   },
 
   registerOperator: function registerOperator(key, options) {
@@ -175,6 +200,11 @@ var parseExpression = function parseExpression(expression) {
   }
 
   return parseGroups(stack);
+};
+
+var isVariable = function isVariable(char) {
+  var ch = _.removeSymbols(char);
+  return typeof ch === 'string' && !_.isNumber(ch) && !_operators2['default'][ch] && char === ch.toLowerCase();
 };
 
 /**
