@@ -18,7 +18,7 @@ var _operators = require('./operators');
 
 var _operators2 = _interopRequireWildcard(_operators);
 
-var _constants = require('./constats');
+var _constants = require('./constants');
 
 var _constants2 = _interopRequireWildcard(_constants);
 
@@ -116,7 +116,6 @@ var solveStack = (function (_solveStack) {
 
   return solveStack;
 })(function (stack) {
-  // $0(stack);
   if (stack.some(Array.isArray)) {
     stack = stack.map(function (group) {
       if (!Array.isArray(group)) {

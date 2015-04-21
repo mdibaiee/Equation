@@ -195,7 +195,7 @@ var _operators = require('./operators');
 
 var _operators2 = _interopRequireWildcard(_operators);
 
-var _constants = require('./constats');
+var _constants = require('./constants');
 
 var _constants2 = _interopRequireWildcard(_constants);
 
@@ -293,7 +293,6 @@ var solveStack = (function (_solveStack) {
 
   return solveStack;
 })(function (stack) {
-  // $0(stack);
   if (stack.some(Array.isArray)) {
     stack = stack.map(function (group) {
       if (!Array.isArray(group)) {
@@ -578,7 +577,7 @@ var replaceConstants = function replaceConstants(expression) {
 
 exports['default'] = Equation;
 module.exports = exports['default'];
-},{"./constats":1,"./helpers":2,"./operators":4,"./readstream":5}],4:[function(require,module,exports){
+},{"./constants":1,"./helpers":2,"./operators":4,"./readstream":5}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
