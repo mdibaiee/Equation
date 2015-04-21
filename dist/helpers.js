@@ -152,6 +152,6 @@ var flatten = (function (_flatten) {
 
 exports.flatten = flatten;
 var removeSymbols = function removeSymbols(string) {
-  return string.toString().replace(/\W/g, '');
+  return string.replace(/\W/g, '');
 };
 exports.removeSymbols = removeSymbols;
