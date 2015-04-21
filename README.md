@@ -4,6 +4,14 @@ Solve math expressions or create equations for repeated and complex Math tasks.
 
 To use in browser, download [`equation.min.js`](https://raw.githubusercontent.com/mdibaiee/Equation.js/master/equation.min.js).
 
+Install using npm:
+
+```
+npm install equations
+```
+
+####Examples:
+
 ```javascript
 // solve
 console.log(Equation.solve('4 * lg(4) ^ 3')); // 32
@@ -39,25 +47,25 @@ API
 ####solve(expression: String)
 Takes a math expression and evaluates it, returning the result.
 
-###equation(expression: String)
+####equation(expression: String)
 Takes a math expression containing variables, returning a function which
 replaces the variables with given arguments, and solves the expression.
 
-###registerOperator(key: String, options: Object)
+####registerOperator(key: String, options: Object)
 Registers a new operator.
 
 Options:
 
 #####fn
-  The function which runs on arguments
+  The function which is run on arguments and returns the result
 #####format
   The format which specifies how arguments are placed relative to operator, this is a string in which 1 represents the operator and zeroes represent arguments.
 
   For example `+` has the format `010` and factorial has `01`.
 #####precedence
-  Specifies the precedence of operator. The less the value, the higher the precedence, resulting in soon execution.
+  Specifies the precedence of operator. The less the value, the higher the precedence, resulting in sooner execution.
 
-###registerConstant(key: String, value: Function/Number)
+####registerConstant(key: String, value: Function/Number)
 Registers a new constant. value can be a function (takes no arguments), or a constant number.
 
 That's right, we have named these *constants* but they actually can change, that's why we can use functions to define them. An example is the `RAND` constant which calls `Math.random`.
@@ -79,6 +87,7 @@ Runs ESLint on `lib` and `tests`
 ######test
 Runs the tests
 
+---
 Please make sure to run `grunt eslint` before commiting.
 
 If you're adding something new, please add a test, too.
