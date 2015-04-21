@@ -42,6 +42,8 @@ Equation.registerConstant('N', () => {
 Equation.solve('N'); // a number between 10 and 20
 ```
 
+For a list of operators and constants see `[operators.js](https://github.com/mdibaiee/Equation.js/blob/master/lib/operators.js)` and `[constants.js](https://github.com/mdibaiee/Equation.js/blob/master/lib/constants.js)`.
+
 API
 ===
 ####solve(expression: String)
