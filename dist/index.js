@@ -53,6 +53,7 @@ var Equation = {
 
     return stack;
   },
+
   /**
     * Creates an equation function which replaces variables
     * in the given expression with the values specified in order,
@@ -98,6 +99,7 @@ var Equation = {
   registerOperator: function registerOperator(key, options) {
     _operators2['default'][key] = options;
   },
+
   registerConstant: function registerConstant(key, options) {
     _constants2['default'][key] = options;
   }

@@ -171,7 +171,7 @@ var flatten = (function (_flatten) {
 
 exports.flatten = flatten;
 var removeSymbols = function removeSymbols(string) {
-  return string.replace(/\W/g, '');
+  return string.toString().replace(/\W/g, '');
 };
 exports.removeSymbols = removeSymbols;
 },{}],3:[function(require,module,exports){
@@ -230,6 +230,7 @@ var Equation = {
 
     return stack;
   },
+
   /**
     * Creates an equation function which replaces variables
     * in the given expression with the values specified in order,
@@ -275,6 +276,7 @@ var Equation = {
   registerOperator: function registerOperator(key, options) {
     _operators2['default'][key] = options;
   },
+
   registerConstant: function registerConstant(key, options) {
     _constants2['default'][key] = options;
   }
