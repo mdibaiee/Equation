@@ -34,6 +34,20 @@ describe('Basic math operators', function () {
   });
 });
 
+describe('Negative Numbers', function () {
+  it('should work for negative numbers after operators', function () {
+    _expect.expect(_M2['default'].solve('2 + -5')).to.equal(-3);
+  });
+
+  it('should work for negative numbers after groups', function () {
+    _expect.expect(_M2['default'].solve('1 + (2 - 5) - 2')).to.equal(-4);
+  });
+
+  it('should work for expressions starting with negative numbers', function () {
+    _expect.expect(_M2['default'].solve('-2 + 1')).to.equal(-1);
+  });
+});
+
 describe('Precedence', function () {
   it('Test case 1', function () {
     _expect.expect(_M2['default'].solve('2+(2+1)*(1+1)^2')).to.equal(14);

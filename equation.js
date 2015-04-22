@@ -331,10 +331,12 @@ var parseExpression = function parseExpression(expression) {
 
   // Create an array of separated numbers & operators
   while (stream.next()) {
-    var cur = stream.current();
+    var cur = stream.current(),
+        past = stack.length - 1;
     if (cur === ' ') {
       continue;
     }
+
     // it's probably a function with a length more than one
     if (!_.isNumber(cur) && !_operators2['default'][cur] && cur !== '.') {
       record += cur;
@@ -344,6 +346,19 @@ var parseExpression = function parseExpression(expression) {
     } else if (_.isNumber(stack[stack.length - 1]) && (_.isNumber(cur) || cur === '.')) {
 
       stack[stack.length - 1] += cur;
+    } else if (stack[past] === '-') {
+      var beforeSign = stack[stack.length - 2];
+
+      if (_operators2['default'][beforeSign]) {
+        stack[past] += cur;
+      } else if (beforeSign === ')') {
+        stack[past] = '+';
+        stack.push('-' + cur);
+      } else if (_.isNumber(beforeSign)) {
+        stack.push(cur);
+      } else {
+        stack[past] += cur;
+      }
     } else {
       stack.push(cur);
     }

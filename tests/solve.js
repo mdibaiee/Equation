@@ -27,6 +27,20 @@ describe('Basic math operators', () => {
   });
 });
 
+describe('Negative Numbers', () => {
+  it('should work for negative numbers after operators', () => {
+    expect(M.solve('2 + -5')).to.equal(-3);
+  });
+
+  it('should work for negative numbers after groups', () => {
+    expect(M.solve('1 + (2 - 5) - 2')).to.equal(-4);
+  });
+
+  it('should work for expressions starting with negative numbers', () => {
+    expect(M.solve('-2 + 1')).to.equal(-1);
+  });
+});
+
 describe('Precedence', () => {
   it('Test case 1', () => {
     expect(M.solve('2+(2+1)*(1+1)^2')).to.equal(14);
