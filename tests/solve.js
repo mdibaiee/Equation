@@ -25,6 +25,13 @@ describe('Basic math operators', () => {
   it('should work for multi-digit numbers', () => {
     expect(M.solve('12+15')).to.equal(27);
   });
+
+  it('should deal with floating precision of javascript - #5', () => {
+    expect(M.solve('0.2 + 0.1')).to.equal(0.3);
+    expect(M.solve('0.2 + 0.4')).to.equal(0.6);
+    expect(M.solve('round(floor(1.23456789/0.2)) * 0.2')).to.equal(1.2);
+    expect(M.solve('1.23456789 - (1.23456789 % 0.2)')).to.equal(1.2);
+  });
 });
 
 describe('Negative Numbers', () => {
@@ -60,11 +67,11 @@ describe('Precedence', () => {
 });
 
 describe('Functions', () => {
-  it('should work for with parantheses', () => {
+  it('should work with parantheses', () => {
     expect(M.solve('lg(4) * 5')).to.equal(10);
   });
 
-  it('should work for without parantheses', () => {
+  it('should work without parantheses', () => {
     expect(M.solve('lg4 * 5')).to.equal(10);
   });
 

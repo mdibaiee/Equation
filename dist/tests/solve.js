@@ -32,6 +32,13 @@ describe('Basic math operators', function () {
   it('should work for multi-digit numbers', function () {
     _expect.expect(_M2['default'].solve('12+15')).to.equal(27);
   });
+
+  it('should deal with floating precision of javascript - #5', function () {
+    _expect.expect(_M2['default'].solve('0.2 + 0.1')).to.equal(0.3);
+    _expect.expect(_M2['default'].solve('0.2 + 0.4')).to.equal(0.6);
+    _expect.expect(_M2['default'].solve('round(floor(1.23456789/0.2)) * 0.2')).to.equal(1.2);
+    _expect.expect(_M2['default'].solve('1.23456789 - (1.23456789 % 0.2)')).to.equal(1.2);
+  });
 });
 
 describe('Negative Numbers', function () {
@@ -67,11 +74,11 @@ describe('Precedence', function () {
 });
 
 describe('Functions', function () {
-  it('should work for with parantheses', function () {
+  it('should work with parantheses', function () {
     _expect.expect(_M2['default'].solve('lg(4) * 5')).to.equal(10);
   });
 
-  it('should work for without parantheses', function () {
+  it('should work without parantheses', function () {
     _expect.expect(_M2['default'].solve('lg4 * 5')).to.equal(10);
   });
 
