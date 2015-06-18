@@ -72,7 +72,11 @@ var Equation = {
     var stack = parseExpression(expression);
     var variables = [];
 
-    stack.forEach(function (a) {
+    stack.forEach(function varCheck(a) {
+      if (Array.isArray(a)) {
+        return a.forEach(varCheck);
+      }
+
       if (typeof a === 'string' && !_.isNumber(a) && !_operators2['default'][a] && a === a.toLowerCase()) {
         // grouped variables like (y) need to have their parantheses removed
         variables.push(_.removeSymbols(a));
@@ -161,22 +165,30 @@ var parseExpression = function parseExpression(expression) {
     }
 
     // it's probably a function with a length more than one
-    if (!_.isNumber(cur) && !_operators2['default'][cur] && cur !== '.') {
+    if (!_.isNumber(cur) && !_operators2['default'][cur] && cur !== '.' && cur !== '(' && cur !== ')') {
+
       record += cur;
     } else if (record.length) {
       stack.push(record, cur);
       record = '';
-    } else if (_.isNumber(stack[stack.length - 1]) && (_.isNumber(cur) || cur === '.')) {
+    } else if (_.isNumber(stack[past]) && (_.isNumber(cur) || cur === '.')) {
 
-      stack[stack.length - 1] += cur;
+      stack[past] += cur;
+
+      // negation sign
     } else if (stack[past] === '-') {
-      var beforeSign = stack[stack.length - 2];
+      var beforeSign = stack[past - 1];
 
+      // 2 / -5 is OK, pass
       if (_operators2['default'][beforeSign]) {
         stack[past] += cur;
+
+        // (2+1) - 5 becomes (2+1) + -5
       } else if (beforeSign === ')') {
         stack[past] = '+';
         stack.push('-' + cur);
+
+        // 2 - 5 is also OK, pass
       } else if (_.isNumber(beforeSign)) {
         stack.push(cur);
       } else {
@@ -353,7 +365,7 @@ var evaluate = function evaluate(stack) {
   var leftArguments = stack.slice(0, left),
       rightArguments = stack.slice(left + 1);
 
-  return (_operators$op = _operators2['default'][op]).fn.apply(_operators$op, _toConsumableArray(leftArguments).concat(_toConsumableArray(rightArguments)));
+  return fixFloat((_operators$op = _operators2['default'][op]).fn.apply(_operators$op, _toConsumableArray(leftArguments).concat(_toConsumableArray(rightArguments))));
 };
 
 /**
@@ -411,6 +423,18 @@ var replaceConstants = function replaceConstants(expression) {
     }
     return typeof c === 'function' ? c() : c;
   });
+};
+
+/**
+  * Fixes JavaScript's floating point precisions - Issue #5
+  *
+  * @param {Number} number
+  *        The number to fix
+  * @return {Number}
+  *         Fixed number
+  */
+var fixFloat = function fixFloat(number) {
+  return +number.toFixed(15);
 };
 
 exports['default'] = Equation;

@@ -109,6 +109,16 @@ exports['default'] = {
     fn: Math.cot,
     format: '10',
     precedence: -1
+  },
+  round: {
+    fn: Math.round,
+    format: '10',
+    precedence: -1
+  },
+  floor: {
+    fn: Math.floor,
+    format: '10',
+    precedence: -1
   }
 };
 module.exports = exports['default'];
