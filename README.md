@@ -18,8 +18,10 @@ console.log(Equation.solve('4 * lg(4) ^ 3')); // 32
 
 // equation
 let sphereArea = Equation.equation('4 * PI * r^2');
-
 console.log(sphereArea(5)); // 314.1592653589793
+
+let test = Equation.equation('2x + 6y');
+console.log(test(4, 3)).to.equal(8 + 18);
 ```
 
 You can also register your own operators and constants.

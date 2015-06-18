@@ -70,14 +70,14 @@ var Equation = {
     */
   equation: function equation(expression) {
     var stack = parseExpression(expression);
+    console.log(stack);
     var variables = [];
 
     stack.forEach(function varCheck(a) {
       if (Array.isArray(a)) {
         return a.forEach(varCheck);
       }
-
-      if (typeof a === 'string' && !_.isNumber(a) && !_operators2['default'][a] && a === a.toLowerCase()) {
+      if (isVariable(a)) {
         // grouped variables like (y) need to have their parantheses removed
         variables.push(_.removeSymbols(a));
       }
@@ -88,15 +88,30 @@ var Equation = {
         args[_key] = arguments[_key];
       }
 
-      expression = expression.replace(/[a-z]*/g, function (a) {
+      stack.forEach(function varCheck(a, i, arr) {
+        if (Array.isArray(a)) {
+          return a.forEach(varCheck);
+        }
+
         var index = variables.indexOf(a);
         if (index > -1) {
-          return args[index] || 0;
+          // grouped variables like (y) need to have their parantheses removed
+          arr[i] = args[index];
         }
-        return a;
       });
 
-      return Equation.solve(expression);
+      stack = sortStack(stack);
+      stack = _.parseNumbers(stack);
+      stack = solveStack(stack);
+      // expression = expression.replace(/[a-z]*/g, a => {
+      //   let index = variables.indexOf(a);
+      //   if (index > -1) {
+      //     return args[index] || 0;
+      //   }
+      //   return a;
+      // });
+
+      return stack;
     };
   },
 
@@ -154,12 +169,15 @@ var MIN_PRECEDENCE = Math.min.apply(Math, _toConsumableArray(PRECEDENCES));
 var parseExpression = function parseExpression(expression) {
   var stream = new _ReadStream2['default'](expression),
       stack = [],
-      record = '';
+      record = '',
+      cur = undefined,
+      past = undefined;
 
   // Create an array of separated numbers & operators
   while (stream.next()) {
-    var cur = stream.current(),
-        past = stack.length - 1;
+    cur = stream.current();
+    past = stack.length - 1;
+
     if (cur === ' ') {
       continue;
     }
@@ -169,8 +187,14 @@ var parseExpression = function parseExpression(expression) {
 
       record += cur;
     } else if (record.length) {
+      var beforeRecord = past - (record.length - 1);
+      if (isVariable(record) && _.isNumber(stack[beforeRecord])) {
+        stack.push('*');
+      }
       stack.push(record, cur);
       record = '';
+
+      // numbers and decimals
     } else if (_.isNumber(stack[past]) && (_.isNumber(cur) || cur === '.')) {
 
       stack[past] += cur;
@@ -199,6 +223,10 @@ var parseExpression = function parseExpression(expression) {
     }
   }
   if (record.length) {
+    var beforeRecord = past - (record.length - 1);
+    if (isVariable(record) && _.isNumber(stack[beforeRecord])) {
+      stack.push('*');
+    }
     stack.push(record);
   }
 
@@ -437,5 +465,16 @@ var fixFloat = function fixFloat(number) {
   return +number.toFixed(15);
 };
 
+/**
+  * Recognizes variables such as x, y, z
+  * @param {String} a
+  *        The string to check for
+  * @return {Boolean}
+  *         true if variable, else false
+  */
+var isVariable = function isVariable(a) {
+  return typeof a === 'string' && !_.isNumber(a) && !_operators2['default'][a] && a === a.toLowerCase();
+};
+
+exports.isVariable = isVariable;
 exports['default'] = Equation;
-module.exports = exports['default'];

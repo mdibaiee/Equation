@@ -30,6 +30,11 @@ describe('Equations', function () {
     _expect.expect(equation).to['throw']();
   });
 
+  it('should work with NumVariable expressions like 2x', function () {
+    var equation = _M2['default'].equation('2x + 6y');
+    _expect.expect(equation(4, 3)).to.equal(8 + 18);
+  });
+
   it('Test case', function () {
     var equation = _M2['default'].equation('2+x*(y+4)+z^2');
     _expect.expect(equation(2, 4, 3)).to.equal(27);

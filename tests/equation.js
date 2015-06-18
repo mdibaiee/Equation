@@ -23,6 +23,11 @@ describe('Equations', () => {
     expect(equation).to.throw();
   });
 
+  it('should work with NumVariable expressions like 2x', () => {
+    let equation = M.equation('2x + 6y');
+    expect(equation(4, 3)).to.equal(8 + 18);
+  });
+
   it('Test case', () => {
     let equation = M.equation('2+x*(y+4)+z^2');
     expect(equation(2, 4, 3)).to.equal(27);
