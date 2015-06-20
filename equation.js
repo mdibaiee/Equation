@@ -280,13 +280,6 @@ var Equation = {
       stack = sortStack(stack);
       stack = _.parseNumbers(stack);
       stack = solveStack(stack);
-      // expression = expression.replace(/[a-z]*/g, a => {
-      //   let index = variables.indexOf(a);
-      //   if (index > -1) {
-      //     return args[index] || 0;
-      //   }
-      //   return a;
-      // });
 
       return stack;
     };
