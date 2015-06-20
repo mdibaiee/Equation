@@ -247,7 +247,6 @@ var Equation = {
     */
   equation: function equation(expression) {
     var stack = parseExpression(expression);
-    console.log(stack);
     var variables = [];
 
     stack.forEach(function varCheck(a) {
