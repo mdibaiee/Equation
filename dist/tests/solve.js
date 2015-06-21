@@ -92,7 +92,25 @@ describe('Constats', function () {
     _expect.expect(_M2['default'].solve('sin(PI/2)')).to.equal(1);
   });
 
-  it('should work for functions as constants', function () {
+  it('should work for functions as constants - retry on fail', function () {
     _expect.expect(_M2['default'].solve('RAND')).to.not.equal(_M2['default'].solve('RAND'));
+  });
+});
+
+describe('Sigma', function () {
+  it('should work with simple expressions', function () {
+    _expect.expect(_M2['default'].solve('sigma(0, 5, @)')).to.equal(15);
+  });
+
+  it('should work with more complex expressions', function () {
+    _expect.expect(_M2['default'].solve('sigma(0, 2, 2@+5)')).to.equal(21);
+  });
+
+  it('should work without an iterator sign', function () {
+    _expect.expect(_M2['default'].solve('sigma(0, 2, 5*2)')).to.equal(30);
+  });
+
+  it('should work with negative start / end points', function () {
+    _expect.expect(_M2['default'].solve('sigma(-5, -2, @)')).to.equal(-14);
   });
 });

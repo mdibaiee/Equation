@@ -284,6 +284,13 @@ var Equation = {
     };
   },
 
+  // 2x + 5x * x  => 7x^2
+  simplify: function simplify(expression) {
+    var stack = parseExpression(expression);
+
+    console.log(stack);
+  },
+
   registerOperator: function registerOperator(key, options) {
     _operators2['default'][key] = options;
   },
@@ -304,7 +311,13 @@ var solveStack = (function (_solveStack) {
 
   return solveStack;
 })(function (stack) {
-  if (stack.some(Array.isArray)) {
+  // if an operator takes an expression argument, we should not dive into it
+  // and solve the expression inside
+  var hasExpressionArgument = stack.some(function (a) {
+    return _operators2['default'][a] && _operators2['default'][a].hasExpression;
+  });
+
+  if (!hasExpressionArgument && stack.some(Array.isArray)) {
     stack = stack.map(function (group) {
       if (!Array.isArray(group)) {
         return group;
@@ -336,6 +349,12 @@ var MIN_PRECEDENCE = Math.min.apply(Math, _toConsumableArray(PRECEDENCES));
   *         The parsed array
   */
 var parseExpression = function parseExpression(expression) {
+  // function arguments can be separated using comma,
+  // but we parse as groups, so this is the solution to getting comma to work
+  // sigma(0, 4, 2@) becomes sigma(0)(4)(2@) so every argument is parsed
+  // separately
+  expression = expression.replace(/,/g, ')(');
+
   var stream = new _ReadStream2['default'](expression),
       stack = [],
       record = '',
@@ -415,19 +434,19 @@ var parseExpression = function parseExpression(expression) {
   */
 var parseGroups = function parseGroups(stack) {
   // Parantheses become inner arrays which will then be processed first
-  var sub = 0;
+  var depth = 0;
   return stack.reduce(function (a, b) {
     if (b.indexOf('(') > -1) {
       if (b.length > 1) {
-        _.dive(a, sub).push(b.replace('(', ''), []);
+        _.dive(a, depth).push(b.replace('(', ''), []);
       } else {
-        _.dive(a, sub).push([]);
+        _.dive(a, depth).push([]);
       }
-      sub++;
+      depth++;
     } else if (b === ')') {
-      sub--;
+      depth--;
     } else {
-      _.dive(a, sub).push(b);
+      _.dive(a, depth).push(b);
     }
     return a;
   }, []);
@@ -650,9 +669,16 @@ exports['default'] = Equation;
 },{"./constants":1,"./helpers":2,"./operators":4,"./readstream":5}],4:[function(require,module,exports){
 'use strict';
 
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
+
+var _Equation = require('equation');
+
+var _Equation2 = _interopRequireWildcard(_Equation);
+
 /*
  * Operators and Functions
  * fn: function used to evaluate value
@@ -661,6 +687,11 @@ Object.defineProperty(exports, '__esModule', {
  *         e.g: factorial is 01, add is 010, like 2!, 2+2
  * precedence: determines which operators should be evaluated first
  *             the lower the value, the higher the precedence
+ * hasExpression: determines if any of the operator arguments are an expression
+ *                This way, arguments will not be solved by equation and instead
+ *                you have to call solve on each argument yourself.
+ *                You get the arguments as parsed arrays sigma(0, 5, 2@) becomes
+ *                sigma(0, 5, [2, '*', '@']). See sigma operator for reference
  */
 exports['default'] = {
   '^': {
@@ -769,10 +800,27 @@ exports['default'] = {
     fn: Math.floor,
     format: '10',
     precedence: -1
+  },
+  sigma: {
+    fn: function fn(from, to, expression) {
+      var expr = expression.join('').replace(/,/g, '');
+      var regex = new RegExp(ITERATOR_SIGN, 'g');
+
+      var sum = 0;
+      for (var i = from; i <= to; i++) {
+        sum += _Equation2['default'].solve(expr.replace(regex, i));
+      }
+      return sum;
+    },
+    format: '1000',
+    hasExpression: true,
+    precedence: -1
   }
 };
+
+var ITERATOR_SIGN = '@';
 module.exports = exports['default'];
-},{}],5:[function(require,module,exports){
+},{"equation":8}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -835,5 +883,15 @@ exports['default'] = function (string) {
 };
 
 module.exports = exports['default'];
-},{}]},{},[3])(3)
+},{}],6:[function(require,module,exports){
+arguments[4][1][0].apply(exports,arguments)
+},{"dup":1}],7:[function(require,module,exports){
+arguments[4][2][0].apply(exports,arguments)
+},{"dup":2}],8:[function(require,module,exports){
+arguments[4][3][0].apply(exports,arguments)
+},{"./constants":6,"./helpers":7,"./operators":9,"./readstream":10,"dup":3}],9:[function(require,module,exports){
+arguments[4][4][0].apply(exports,arguments)
+},{"dup":4,"equation":8}],10:[function(require,module,exports){
+arguments[4][5][0].apply(exports,arguments)
+},{"dup":5}]},{},[3])(3)
 });
