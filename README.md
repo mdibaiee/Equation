@@ -1,4 +1,4 @@
-Equation [![Build Status](https://travis-ci.org/mdibaiee/Equation.svg?branch=master)](https://travis-ci.org/mdibaiee/Equation.js)
+Equation [![Build Status](https://travis-ci.org/mdibaiee/Equation.svg?branch=master)](https://travis-ci.org/mdibaiee/Equation)
 ========
 Solve math expressions or create equations for repeated and complex Math tasks.
 
