@@ -107,13 +107,6 @@ var Equation = {
     };
   },
 
-  // 2x + 5x * x  => 7x^2
-  simplify: function simplify(expression) {
-    var stack = parseExpression(expression);
-
-    console.log(stack);
-  },
-
   registerOperator: function registerOperator(key, options) {
     _operators2['default'][key] = options;
   },
