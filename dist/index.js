@@ -127,7 +127,13 @@ var solveStack = (function (_solveStack) {
 
   return solveStack;
 })(function (stack) {
-  if (stack.some(Array.isArray)) {
+  // if an operator takes an expression argument, we should not dive into it
+  // and solve the expression inside
+  var hasExpressionArgument = stack.some(function (a) {
+    return _operators2['default'][a] && _operators2['default'][a].hasExpression;
+  });
+
+  if (!hasExpressionArgument && stack.some(Array.isArray)) {
     stack = stack.map(function (group) {
       if (!Array.isArray(group)) {
         return group;
@@ -159,6 +165,12 @@ var MIN_PRECEDENCE = Math.min.apply(Math, _toConsumableArray(PRECEDENCES));
   *         The parsed array
   */
 var parseExpression = function parseExpression(expression) {
+  // function arguments can be separated using comma,
+  // but we parse as groups, so this is the solution to getting comma to work
+  // sigma(0, 4, 2@) becomes sigma(0)(4)(2@) so every argument is parsed
+  // separately
+  expression = expression.replace(/,/g, ')(');
+
   var stream = new _ReadStream2['default'](expression),
       stack = [],
       record = '',
@@ -238,19 +250,19 @@ var parseExpression = function parseExpression(expression) {
   */
 var parseGroups = function parseGroups(stack) {
   // Parantheses become inner arrays which will then be processed first
-  var sub = 0;
+  var depth = 0;
   return stack.reduce(function (a, b) {
     if (b.indexOf('(') > -1) {
       if (b.length > 1) {
-        _.dive(a, sub).push(b.replace('(', ''), []);
+        _.dive(a, depth).push(b.replace('(', ''), []);
       } else {
-        _.dive(a, sub).push([]);
+        _.dive(a, depth).push([]);
       }
-      sub++;
+      depth++;
     } else if (b === ')') {
-      sub--;
+      depth--;
     } else {
-      _.dive(a, sub).push(b);
+      _.dive(a, depth).push(b);
     }
     return a;
   }, []);

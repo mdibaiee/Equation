@@ -85,7 +85,25 @@ describe('Constats', () => {
     expect(M.solve('sin(PI/2)')).to.equal(1);
   });
 
-  it('should work for functions as constants', () => {
+  it('should work for functions as constants - retry on fail', () => {
     expect(M.solve('RAND')).to.not.equal(M.solve('RAND'));
+  });
+});
+
+describe('Sigma', () => {
+  it('should work with simple expressions', () => {
+    expect(M.solve('sigma(0, 5, @)')).to.equal(15);
+  });
+
+  it('should work with more complex expressions', () => {
+    expect(M.solve('sigma(0, 2, 2@+5)')).to.equal(21);
+  });
+
+  it('should work without an iterator sign', () => {
+    expect(M.solve('sigma(0, 2, 5*2)')).to.equal(30);
+  });
+
+  it('should work with negative start / end points', () => {
+    expect(M.solve('sigma(-5, -2, @)')).to.equal(-14);
   });
 });

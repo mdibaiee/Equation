@@ -1,8 +1,8 @@
-Equation [![Build Status](https://travis-ci.org/mdibaiee/Equation.js.svg?branch=master)](https://travis-ci.org/mdibaiee/Equation.js)
+Equation [![Build Status](https://travis-ci.org/mdibaiee/Equation.svg?branch=master)](https://travis-ci.org/mdibaiee/Equation.js)
 ========
 Solve math expressions or create equations for repeated and complex Math tasks.
 
-To use in browser, download [`equation.min.js`](https://raw.githubusercontent.com/mdibaiee/Equation.js/master/equation.min.js).
+To use in browser, download [`equation.min.js`](https://raw.githubusercontent.com/mdibaiee/Equation/master/equation.min.js).
 
 Install using npm:
 
@@ -27,7 +27,7 @@ console.log(test(4, 3)).to.equal(8 + 18);
 You can also register your own operators and constants.
 
 ```javascript
-// these options are explained below
+// these options are explained in [`operators.js`](https://github.com/mdibaiee/Equation/blob/master/lib/operators.js).
 Equation.registerOperator('$', {
   fn: a => 1/a,
   format: '10',
@@ -42,9 +42,12 @@ Equation.registerConstant('N', () => {
 });
 
 Equation.solve('N'); // a number between 10 and 20
+
+// Complex operators
+Equation.solve('sigma(0, 5, 2@ + 5)'); // 60
 ```
 
-For a list of operators and constants see [`operators.js`](https://github.com/mdibaiee/Equation.js/blob/master/lib/operators.js) and [`constants.js`](https://github.com/mdibaiee/Equation.js/blob/master/lib/constants.js).
+For a list of operators and constants see [`operators.js`](https://github.com/mdibaiee/Equation/blob/master/lib/operators.js) and [`constants.js`](https://github.com/mdibaiee/Equation/blob/master/lib/constants.js).
 
 API
 ===

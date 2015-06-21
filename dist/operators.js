@@ -1,8 +1,15 @@
 'use strict';
 
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
+
+var _Equation = require('./index');
+
+var _Equation2 = _interopRequireWildcard(_Equation);
+
 /*
  * Operators and Functions
  * fn: function used to evaluate value
@@ -11,6 +18,11 @@ Object.defineProperty(exports, '__esModule', {
  *         e.g: factorial is 01, add is 010, like 2!, 2+2
  * precedence: determines which operators should be evaluated first
  *             the lower the value, the higher the precedence
+ * hasExpression: determines if any of the operator arguments are an expression
+ *                This way, arguments will not be solved by equation and instead
+ *                you have to call solve on each argument yourself.
+ *                You get the arguments as parsed arrays sigma(0, 5, 2@) becomes
+ *                sigma(0, 5, [2, '*', '@']). See sigma operator for reference
  */
 exports['default'] = {
   '^': {
@@ -119,6 +131,23 @@ exports['default'] = {
     fn: Math.floor,
     format: '10',
     precedence: -1
+  },
+  sigma: {
+    fn: function fn(from, to, expression) {
+      var expr = expression.join('').replace(/,/g, '');
+      var regex = new RegExp(ITERATOR_SIGN, 'g');
+
+      var sum = 0;
+      for (var i = from; i <= to; i++) {
+        sum += _Equation2['default'].solve(expr.replace(regex, i));
+      }
+      return sum;
+    },
+    format: '1000',
+    hasExpression: true,
+    precedence: -1
   }
 };
+
+var ITERATOR_SIGN = '@';
 module.exports = exports['default'];
