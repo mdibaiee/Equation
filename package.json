@@ -15,6 +15,7 @@
   ],
   "author": "Mahdi Dibaiee",
   "license": "MIT",
+  "repository": "https://github.com/mdibaiee/Equation",
   "devDependencies": {
     "browserify": "^9.0.8",
     "chai": "^2.2.0",
