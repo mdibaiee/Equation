@@ -6,7 +6,7 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _Equation = require('equation');
+var _Equation = require('./index');
 
 var _Equation2 = _interopRequireWildcard(_Equation);
 
