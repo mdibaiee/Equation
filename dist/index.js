@@ -10,6 +10,8 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
+require('babel/polyfill');
+
 var _ReadStream = require('./readstream');
 
 var _ReadStream2 = _interopRequireWildcard(_ReadStream);
