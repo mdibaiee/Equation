@@ -219,7 +219,7 @@ var parseExpression = function parseExpression(expression) {
         stack.push('-' + cur);
 
         // 2 - 5 is also OK, pass
-      } else if (_.isNumber(beforeSign)) {
+      } else if (_.isNumber(beforeSign) || isVariable(beforeSign)) {
         stack.push(cur);
       } else {
         stack[past] += cur;
@@ -478,8 +478,10 @@ var fixFloat = function fixFloat(number) {
   * @return {Boolean}
   *         true if variable, else false
   */
+
+var SPECIALS = '()[]{}'.split('');
 var isVariable = function isVariable(a) {
-  return typeof a === 'string' && !_.isNumber(a) && !_operators2['default'][a] && a === a.toLowerCase();
+  return typeof a === 'string' && !_.isNumber(a) && !_operators2['default'][a] && a === a.toLowerCase() && SPECIALS.indexOf(a) === -1;
 };
 
 exports.isVariable = isVariable;

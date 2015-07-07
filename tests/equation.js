@@ -6,6 +6,10 @@ describe('Equations', () => {
     let equation = M.equation('x+2');
 
     expect(equation(2)).to.equal(4);
+
+    // Issue #10
+    let subtraction = M.equation('x - 3');
+    expect(subtraction(10)).to.equal(7);
   });
 
   it('should work with multiple variables', () => {

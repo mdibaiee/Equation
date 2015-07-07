@@ -13,6 +13,9 @@ describe('Equations', function () {
     var equation = _M2['default'].equation('x+2');
 
     _expect.expect(equation(2)).to.equal(4);
+
+    var subtraction = _M2['default'].equation('x - 3');
+    _expect.expect(subtraction(10)).to.equal(7);
   });
 
   it('should work with multiple variables', function () {
