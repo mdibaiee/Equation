@@ -14,6 +14,7 @@ describe('Equations', function () {
 
     _expect.expect(equation(2)).to.equal(4);
 
+    // Issue #10
     var subtraction = _M2['default'].equation('x - 3');
     _expect.expect(subtraction(10)).to.equal(7);
   });
