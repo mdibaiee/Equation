@@ -4,6 +4,8 @@ Solve math expressions or create equations for repeated and complex Math tasks.
 
 To use in browser, download [`equation.min.js`](https://raw.githubusercontent.com/mdibaiee/Equation/master/equation.min.js).
 
+_A similar library I wrote in Haskell is also available [mathexpr](https://github.com/mdibaiee/mathexpr)_
+
 Install using npm:
 
 ```
