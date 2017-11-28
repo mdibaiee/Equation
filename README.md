@@ -12,7 +12,7 @@ Install using npm:
 npm install equations
 ```
 
-####Examples:
+#### Examples:
 
 ```javascript
 // solve
@@ -53,28 +53,28 @@ For a list of operators and constants see [`operators.js`](https://github.com/md
 
 API
 ===
-####solve(expression: String)
+#### solve(expression: String)
 Takes a math expression and evaluates it, returning the result.
 
-####equation(expression: String)
+#### equation(expression: String)
 Takes a math expression containing variables, returning a function which
 replaces the variables with given arguments, and solves the expression.
 
-####registerOperator(key: String, options: Object)
+#### registerOperator(key: String, options: Object)
 Registers a new operator.
 
 Options:
 
-#####fn
+##### fn
   The function which is run on arguments and returns the result
-#####format
+##### format
   The format which specifies how arguments are placed relative to operator, this is a string in which 1 represents the operator and zeroes represent arguments.
 
   For example `+` has the format `010` and factorial has `01`.
-#####precedence
+##### precedence
   Specifies the precedence of operator. The less the value, the higher the precedence, resulting in sooner execution.
 
-####registerConstant(key: String, value: Function/Number)
+#### registerConstant(key: String, value: Function/Number)
 Registers a new constant. value can be a function (takes no arguments), or a constant number.
 
 That's right, we have named these *constants* but they actually can change, that's why we can use functions to define them. An example is the `RAND` constant which calls `Math.random`.
