@@ -5,7 +5,7 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 });
 /*
- * Constats
+ * Constants
  * Keys must be UPPERCASE
  * Values Can be a constant value or a function returning a value
  *        this function doesn't take any arguments (use case: random constats)
