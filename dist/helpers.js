@@ -17,17 +17,7 @@ var isNumber = function isNumber(a) {
 };
 
 exports.isNumber = isNumber;
-var parseNumbers = (function (_parseNumbers) {
-  function parseNumbers(_x) {
-    return _parseNumbers.apply(this, arguments);
-  }
-
-  parseNumbers.toString = function () {
-    return _parseNumbers.toString();
-  };
-
-  return parseNumbers;
-})(function (a) {
+var parseNumbers = function parseNumbers(a) {
   return a.map(function (b) {
     if (isNumber(b)) {
       return parseFloat(b);
@@ -37,7 +27,7 @@ var parseNumbers = (function (_parseNumbers) {
     }
     return b;
   });
-});
+};
 
 exports.parseNumbers = parseNumbers;
 var dive = function dive(arr, n) {
@@ -49,18 +39,8 @@ var dive = function dive(arr, n) {
 };
 
 exports.dive = dive;
-var deep = (function (_deep) {
-  function deep(_x2, _x3) {
-    return _deep.apply(this, arguments);
-  }
-
-  deep.toString = function () {
-    return _deep.toString();
-  };
-
-  return deep;
-})(function (arr, n) {
-  var index = arguments[2] === undefined ? 0 : arguments[2];
+var deep = function deep(arr, n) {
+  var index = arguments.length <= 2 || arguments[2] === undefined ? 0 : arguments[2];
 
   if (n < 2) {
     return { arr: arr, index: index };
@@ -68,10 +48,10 @@ var deep = (function (_deep) {
 
   var d = arr.reduce(function (a, b, i) {
     if (Array.isArray(b)) {
-      var _deep2 = deep(b, n - 1, i);
+      var _deep = deep(b, n - 1, i);
 
-      var _arr = _deep2.arr;
-      var x = _deep2.index;
+      var _arr = _deep.arr;
+      var x = _deep.index;
       var merged = a.concat(_arr);
 
       index = x;
@@ -81,20 +61,10 @@ var deep = (function (_deep) {
   }, []);
 
   return { arr: d, index: index };
-});
+};
 
 exports.deep = deep;
-var diveTo = (function (_diveTo) {
-  function diveTo(_x4, _x5, _x6) {
-    return _diveTo.apply(this, arguments);
-  }
-
-  diveTo.toString = function () {
-    return _diveTo.toString();
-  };
-
-  return diveTo;
-})(function (arr, indexes, replace) {
+var diveTo = function diveTo(arr, indexes, replace) {
   var answer = [];
   if (indexes.some(Array.isArray)) {
     var _iteratorNormalCompletion = true;
@@ -127,20 +97,10 @@ var diveTo = (function (_diveTo) {
   }
 
   return answer;
-});
+};
 
 exports.diveTo = diveTo;
-var flatten = (function (_flatten) {
-  function flatten(_x7) {
-    return _flatten.apply(this, arguments);
-  }
-
-  flatten.toString = function () {
-    return _flatten.toString();
-  };
-
-  return flatten;
-})(function (arr) {
+var flatten = function flatten(arr) {
   if (!Array.isArray(arr) || !arr.some(Array.isArray)) {
     return arr;
   }
@@ -148,7 +108,7 @@ var flatten = (function (_flatten) {
   return arr.reduce(function (a, b) {
     return a.concat(flatten(b));
   }, []);
-});
+};
 
 exports.flatten = flatten;
 var removeSymbols = function removeSymbols(string) {

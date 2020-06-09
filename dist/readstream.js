@@ -33,23 +33,13 @@ exports['default'] = function (string) {
     drain: function drain() {
       return buffer.splice(0, buffer.length);
     },
-    replace: (function (_replace) {
-      function replace(_x, _x2, _x3) {
-        return _replace.apply(this, arguments);
-      }
-
-      replace.toString = function () {
-        return _replace.toString();
-      };
-
-      return replace;
-    })(function (start, end, replace) {
+    replace: function replace(start, end, _replace) {
       var temp = string.split('');
-      temp.splice(start, end, replace);
+      temp.splice(start, end, _replace);
       string = temp.join('');
 
       i = i - (end - start);
-    }),
+    },
     go: function go(n) {
       i += n;
     },

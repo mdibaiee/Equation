@@ -1,32 +1,34 @@
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
-var _slicedToArray = function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } };
-
-var _toConsumableArray = function (arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } };
-
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
+var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+
 require('babel/polyfill');
 
-var _ReadStream = require('./readstream');
+var _readstream = require('./readstream');
 
-var _ReadStream2 = _interopRequireWildcard(_ReadStream);
+var _readstream2 = _interopRequireDefault(_readstream);
 
 var _operators = require('./operators');
 
-var _operators2 = _interopRequireWildcard(_operators);
+var _operators2 = _interopRequireDefault(_operators);
 
 var _constants = require('./constants');
 
-var _constants2 = _interopRequireWildcard(_constants);
+var _constants2 = _interopRequireDefault(_constants);
 
-var _import = require('./helpers');
+var _helpers = require('./helpers');
 
-var _ = _interopRequireWildcard(_import);
+var _ = _interopRequireWildcard(_helpers);
 
 var Equation = {
   /**
@@ -118,36 +120,36 @@ var Equation = {
   }
 };
 
-var solveStack = (function (_solveStack) {
-  function solveStack(_x) {
-    return _solveStack.apply(this, arguments);
-  }
+var solveStack = function solveStack(_x) {
+  var _again = true;
 
-  solveStack.toString = function () {
-    return _solveStack.toString();
-  };
+  _function: while (_again) {
+    var stack = _x;
+    _again = false;
 
-  return solveStack;
-})(function (stack) {
-  // if an operator takes an expression argument, we should not dive into it
-  // and solve the expression inside
-  var hasExpressionArgument = stack.some(function (a) {
-    return _operators2['default'][a] && _operators2['default'][a].hasExpression;
-  });
-
-  if (!hasExpressionArgument && stack.some(Array.isArray)) {
-    stack = stack.map(function (group) {
-      if (!Array.isArray(group)) {
-        return group;
-      }
-      return solveStack(group);
+    // if an operator takes an expression argument, we should not dive into it
+    // and solve the expression inside
+    var hasExpressionArgument = stack.some(function (a) {
+      return _operators2['default'][a] && _operators2['default'][a].hasExpression;
     });
 
-    return solveStack(stack);
-  } else {
-    return evaluate(stack);
+    if (!hasExpressionArgument && stack.some(Array.isArray)) {
+      stack = stack.map(function (group) {
+        if (!Array.isArray(group)) {
+          return group;
+        }
+        return solveStack(group);
+      });
+
+      _x = stack;
+      _again = true;
+      hasExpressionArgument = undefined;
+      continue _function;
+    } else {
+      return evaluate(stack);
+    }
   }
-});
+};
 
 var PRECEDENCES = Object.keys(_operators2['default']).map(function (key) {
   return _operators2['default'][key].precedence;
@@ -173,7 +175,7 @@ var parseExpression = function parseExpression(expression) {
   // separately
   expression = expression.replace(/,/g, ')(');
 
-  var stream = new _ReadStream2['default'](expression),
+  var stream = new _readstream2['default'](expression),
       stack = [],
       record = '',
       cur = undefined,
@@ -203,30 +205,30 @@ var parseExpression = function parseExpression(expression) {
       // numbers and decimals
     } else if (_.isNumber(stack[past]) && (_.isNumber(cur) || cur === '.')) {
 
-      stack[past] += cur;
-
-      // negation sign
-    } else if (stack[past] === '-') {
-      var beforeSign = stack[past - 1];
-
-      // 2 / -5 is OK, pass
-      if (_operators2['default'][beforeSign]) {
         stack[past] += cur;
 
-        // (2+1) - 5 becomes (2+1) + -5
-      } else if (beforeSign === ')') {
-        stack[past] = '+';
-        stack.push('-' + cur);
+        // negation sign
+      } else if (stack[past] === '-') {
+          var beforeSign = stack[past - 1];
 
-        // 2 - 5 is also OK, pass
-      } else if (_.isNumber(beforeSign) || isVariable(beforeSign)) {
-        stack.push(cur);
-      } else {
-        stack[past] += cur;
-      }
-    } else {
-      stack.push(cur);
-    }
+          // 2 / -5 is OK, pass
+          if (_operators2['default'][beforeSign]) {
+            stack[past] += cur;
+
+            // (2+1) - 5 becomes (2+1) + -5
+          } else if (beforeSign === ')') {
+              stack[past] = '+';
+              stack.push('-' + cur);
+
+              // 2 - 5 is also OK, pass
+            } else if (_.isNumber(beforeSign) || isVariable(beforeSign)) {
+                stack.push(cur);
+              } else {
+                stack[past] += cur;
+              }
+        } else {
+          stack.push(cur);
+        }
   }
   if (record.length) {
     var beforeRecord = past - (record.length - 1);
@@ -304,17 +306,7 @@ var formatInfo = function formatInfo(operator) {
   * @return {Array}
   *         Grouped expression based on precedences
   */
-var sortStack = (function (_sortStack) {
-  function sortStack(_x2) {
-    return _sortStack.apply(this, arguments);
-  }
-
-  sortStack.toString = function () {
-    return _sortStack.toString();
-  };
-
-  return sortStack;
-})(function (stack) {
+var sortStack = function sortStack(stack) {
   var _iteratorNormalCompletion = true;
   var _didIteratorError = false;
   var _iteratorError = undefined;
@@ -371,7 +363,7 @@ var sortStack = (function (_sortStack) {
   }
 
   return stack;
-});
+};
 
 /**
   * Evaluates the given math expression.

@@ -1,14 +1,14 @@
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
 
-var _Equation = require('./index');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _Equation2 = _interopRequireWildcard(_Equation);
+var _index = require('./index');
+
+var _index2 = _interopRequireDefault(_index);
 
 /*
  * Operators and Functions
@@ -77,7 +77,7 @@ exports['default'] = {
   '!': {
     fn: function fn(a) {
       var sum = 1;
-      for (var i = 0; i < a; ++i) {
+      for (var i = 1; i <= a; ++i) {
         sum *= i;
       }
       return sum;
@@ -85,61 +85,61 @@ exports['default'] = {
     format: '01',
     precedence: 2
   },
-  log: {
+  'log': {
     fn: Math.log,
     format: '10',
     precedence: -1
   },
-  ln: {
+  'ln': {
     fn: Math.log,
     format: '10',
     precedence: -1
   },
-  lg: {
+  'lg': {
     fn: function fn(a) {
       return Math.log(a) / Math.log(2);
     },
     format: '10',
     precedence: -1
   },
-  sin: {
+  'sin': {
     fn: Math.sin,
     format: '10',
     precedence: -1
   },
-  cos: {
+  'cos': {
     fn: Math.cos,
     format: '10',
     precedence: -1
   },
-  tan: {
+  'tan': {
     fn: Math.tan,
     format: '10',
     precedence: -1
   },
-  cot: {
+  'cot': {
     fn: Math.cot,
     format: '10',
     precedence: -1
   },
-  round: {
+  'round': {
     fn: Math.round,
     format: '10',
     precedence: -1
   },
-  floor: {
+  'floor': {
     fn: Math.floor,
     format: '10',
     precedence: -1
   },
-  sigma: {
+  'sigma': {
     fn: function fn(from, to, expression) {
       var expr = expression.join('').replace(/,/g, '');
       var regex = new RegExp(ITERATOR_SIGN, 'g');
 
       var sum = 0;
       for (var i = from; i <= to; i++) {
-        sum += _Equation2['default'].solve(expr.replace(regex, i));
+        sum += _index2['default'].solve(expr.replace(regex, i));
       }
       return sum;
     },
