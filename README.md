@@ -15,6 +15,10 @@ npm install equations
 #### Examples:
 
 ```javascript
+//import
+
+const Equation = require('equations').default
+
 // solve
 console.log(Equation.solve('4 * lg(4) ^ 3')); // 32
 
@@ -77,7 +81,7 @@ Options:
 #### registerConstant(key: String, value: Function/Number)
 Registers a new constant. value can be a function (takes no arguments), or a constant number.
 
-That's right, we have named these *constants* but they actually can change, that's why we can use functions to define them. An example is the `RAND` constant which calls `Math.random`.
+That's right, we have named these *constants*, but they actually can change, that's why we can use functions to define them. An example is the `RAND` constant which calls `Math.random`.
 
 Contributing
 ============
